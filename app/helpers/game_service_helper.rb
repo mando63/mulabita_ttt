@@ -1,0 +1,2 @@
+module GameServiceHelper
+end

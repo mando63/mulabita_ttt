@@ -1,0 +1,2 @@
+class PlayServiceController < ApplicationController
+end
