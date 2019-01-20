@@ -1,6 +1,6 @@
-class GameServiceController < ApplicationController
+class TicTacApi::V1::GameServiceController < ApplicationController
 
-  before_action :set_game, :only [:show, :start_game, :score, :save, :pause]
+  #before_action :set_game, only: [:show, :start_game, :score, :save, :pause]
   # post request
   def register_player
     
@@ -15,7 +15,8 @@ class GameServiceController < ApplicationController
   end
 
   def index
-    render json: Game.all
+    @games = Game.all
+    render json: @games
   end
 
   #post request to create a new game session
@@ -23,7 +24,6 @@ class GameServiceController < ApplicationController
     @game = Game.new
   end
 
-  end
   #get sscore
   def score
   end
@@ -33,15 +33,14 @@ class GameServiceController < ApplicationController
 
   def save 
     respond_to do |format|
-    if @game.update(game_params)
-      format.html { redirect_to @vehicle, notice: 'The game was successfully saved.' }
-      format.json { render :index, status: :200, location: @game }
-    else
-      format.html { render :edit }
-      format.json { render json: @game.errors, status: :400 }
+      if @game.update(game_params)
+        format.html { redirect_to @vehicle, notice: 'The game was successfully saved.' }
+        format.json { render :index, status: :ok, location: @game }
+      else
+        format.html { render :edit }
+        format.json { render json: @game.errors, status: :unprocessable_entity }
+      end
     end
-  end
-
   end
 
 
@@ -49,10 +48,10 @@ class GameServiceController < ApplicationController
     respond_to do |format|
       if @game.update(game_params)
         format.html { redirect_to @game, notice: 'The game  was successfully paused.' }
-        format.json { render :show, status: :200, location: @game }
-      els
+        format.json { render :show, status: :ok, location: @game }
+      else
         format.html { render :edit }
-        format.json { render json: @game.errors, status: :400 }
+        format.json { render json: @game.errors, status: :unprocessable_entity }
       end
     end
   end
@@ -61,7 +60,7 @@ class GameServiceController < ApplicationController
   def history_results
   end
 
-    private
+  private
 
   def player_params
     params.require(:player).permit(:player_name, :player_email, :player_alias)
