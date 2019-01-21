@@ -51,7 +51,7 @@ module Grid
       @play_position[select_option.to_i] = "X"
       row_col = find_in_grid(player_selection)
       player_1.record_play(@game.id, row_col[:row], row_col[:column], "X")
-      check_player(@player_1)
+      check_player_score(@player_1)
     end
 
     def player_two_play
@@ -60,7 +60,7 @@ module Grid
       @player_position[select_option.to_i] = "O"
       row_col = find_in_grid(player_selection)
       player_2.record_play(@game.id, row_col[:row], row_col[:column], "O")
-      check_player(@player_2)
+      check_player_score(@player_2)
     end
 
     def select_option
@@ -84,9 +84,9 @@ module Grid
     end
 
     def who_is_the_winner?
-      message = if check_player(@player_1)
+      message = if @player_1.winner
           "Player #{@player_1.name} wins!!!"
-        elsif check_player(@player_2)
+        elsif @player_2.winner
           "Player #{@player_2.name} wins!!!"
         else
           "Game has ended in a tie!!!"
@@ -94,12 +94,14 @@ module Grid
     end
 
     private
-    def check_player(player)
+
+    def check_player_score(player)
       @game_in_session = true
       return @game_in_session if (player.game_selections.count < 3) #number of combinations to win a game have not been met therefore return false
       WINNING_COMBINATIONS.each do |combination|
         if combination == player.game_selections
           @game_in_session = false
+          player.has_won?(true)
           break
         end
       end
