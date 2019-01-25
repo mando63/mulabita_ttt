@@ -1,22 +1,31 @@
 class TicTacApi::V1::GameServiceController < ApplicationController
+  respond_to :json
+  before_action :set_game, only: [:show, :start_game, :score, :save, :pause]
 
-  #before_action :set_game, only: [:show, :start_game, :score, :save, :pause]
   # post request
   def register_player
     
   end
 
   def show
-    render json: @game
+    game = @game
+    respond_with(game) do |format|
+      format.json{ render :json => game.as_json }
+    end
   end
 
   def start_game
-    render json: @game
+    start_game = @game
+    respond_with(start_game) do |format|
+      format.json{ render :json => start_game.as_json }
+    end
   end
 
   def index
-    @games = Game.all
-    render json: @games
+    load_games_history = Game.all
+    respond_with(load_games_history) do |format|
+      format.json{ render :json => load_games_history.as_json }
+    end
   end
 
   #post request to create a new game session
@@ -31,10 +40,10 @@ class TicTacApi::V1::GameServiceController < ApplicationController
   def edit
   end
 
-  def save 
+  def save
     respond_to do |format|
       if @game.update(game_params)
-        format.html { redirect_to @vehicle, notice: 'The game was successfully saved.' }
+        format.html { redirect_to @game, notice: 'The game was successfully saved.' }
         format.json { render :index, status: :ok, location: @game }
       else
         format.html { render :edit }

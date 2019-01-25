@@ -1,7 +1,7 @@
 <div>
     <h1>{{title}}</h1>
     <div class="container">
-        <div class="row">
+        <div class="well">
             <div><button class="btn-primary btn-lg" ng-repeat="cell in grid[0]" ng-disabled="isSelected(cell);" ng-click="move(cell);">{{ cell.value }}</button></div>
             <div><button class="btn-primary btn-lg" ng-repeat="cell in grid[1]" ng-disabled="isSelected(cell);" ng-click="move(cell);">{{ cell.value }}</button></div>
             <div><button class="btn-primary btn-lg" ng-repeat="cell in grid[2]" ng-disabled="isSelected(cell);" ng-click="move(cell);">{{ cell.value }}</button></div>
