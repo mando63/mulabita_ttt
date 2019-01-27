@@ -14,6 +14,7 @@
 //= require jquery_ujs
 //= require underscore
 //= require bootstrap
-//= require angular
+//= require angular/angular
 //= require angular-route
+//= require angular-material/angular-material
 
