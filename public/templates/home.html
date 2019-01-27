@@ -1,3 +1,37 @@
 <div>
-    <h1>{{title}}</h1>
+  <h1>{{title}}</h1>
+  <div class="container">
+      <div class="row">
+          <div class="col-md-8">
+              <div class="grid-area">
+                <mat-grid-list class="tic-tac-grid" cols="3">
+                  <mat-grid-tile *ngFor="let block of grid.blocks;let i = index; trackBy: trackByFn" (click)="playerClick(i)">
+
+                  </mat-grid-tile>
+                </mat-grid-list>
+              </div>
+          </div>
+          <div class="col-md-4">
+              <h4>Leader Board</h4>
+              <table class="table table-bordered">
+                  <tbody>
+                      <tr>
+                          <td>Player 1:</td>
+                          <td>{{ gs.players[0].score}}</td>
+                      </tr>
+                      <tr>
+                          <td>Bot:</td>
+                          <td>{{ gs.players[1].score}}</td>
+                      </tr>
+                      <tr>
+                          <td>Draw</td>
+                          <td>{{gs.score}}</td>
+                      </tr>
+                  </tbody>
+              </table>
+              <a (click)="resetGame($event)" href="#" class="btn btn-success">New Game</a>
+              <a (click)="saveGame($event)" href="#" class="btn btn-warning">Save Game</a>
+          </div>
+      </div>
+  </div>
 </div>
