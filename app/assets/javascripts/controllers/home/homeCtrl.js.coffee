@@ -1,19 +1,47 @@
-HomeIndexCtrl = ($scope) ->
-  $scope.title = "Tic Tac Toe with Bot"
+HomeIndexCtrl = ($scope, $http) ->
+  $scope.title = "Tic Tac Toe With Bot"
   $scope.grid = this.initGameService()
   initGameService ->
    @gameServicehelper = new GameServicehelper
   
-  playerClick(i) ->
+  newGame = ->
+   initGameService()
+   @gameServicehelper.freeCellsRemaining = 9
+   @played = false
+   @gameServicehelper.turn = 0
+
+  saveGame = ->
+    $http.post('./tic_tac_api/api/save', data).success(  ->
+      'save'
+    ).error( ->
+      alert('Failed to save game.')
+    )
+
+
+  playerClick(cell) ->
+    if( @gameServicehelper.cells[cell].is_free == false || this.played )
+      return
     if(@gameServicehelper.turn == 0)
-      @gameServicehelper.blocks[i].setValue('not')
+      @gameServicehelper.cells[cell].setValue('not')
     else
       @gameServicehelper.setValue('cross')
     this.changeTurn()
   
   botTurn ->
     alert('Bots Turn')
-  
+    
+    if( @gameServicehelper.freeCellsRemaining <= 0)
+      return
+    bot_move = ->
+      $http.get('./tic_tac_api/v1/play.json').success((data) ->
+        this.playerClick(data)
+        ).error( ->
+          console.error('API call failed')
+          alert('Opps and error occured looks like the Bot is stuck thinking..')
+          )
+    
+    
+
   changeTurn ->
     @gameServicehelper.changeTurn()
     if(@gameServicehelper.turn == 1)
@@ -30,15 +58,15 @@ class Player
     @score += total
     @score
 
-class GridBlock
+class GridCell
   @is_free: true
   @value: ''
   @symbol: ''
 
-  GridBlock::setValue = (value) ->
+  GridCell::setValue = (value) ->
     @value = value
     if @value == 'not'
-      @symbol = 'panorama_fish_eye'
+      @symbol = 'not'
     else
       @symbol = 'close'
     return
@@ -47,21 +75,21 @@ class GameServicehelper
     @players = []
     @turn = 0
     @draw = 0
-    @blocks = []
-    @freeBlocksRemaining = 9
+    @cells = []
+    @freeCellsRemaining = 9
     constructor ->
-      initBlocks()
+      initcells()
       initPlayers()
 
-  GameServicehelper::initBlocks = ->
-    @blocks = []
+  GameServicehelper::initCells = ->
+    @cells = []
     i = 1
     while i <= 9
-      block = new GridBlock
-      block.free = true
-      block.value = ''
-      block.symbol = ''
-      @blocks.push block
+      cell = new GridCell
+      cell.free = true
+      cell.value = ''
+      cell.symbol = ''
+      @cells.push cell
       ++i
     return
 
