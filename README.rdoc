@@ -1,9 +1,18 @@
 == README
+* The Tic-Tac Toe Application was built with the following tech stack:
+- Ruby on Rails for the API
+- Angular + Coffee Script for the Web Application frontend built on top of a Ruby on Rails backend.
+- Bower was used for the mangement of the assets. (https://bower.io/)
 
-* Ruby version 4.2.10
+Architecture:
+* Ruby on Rails API
+The Rails API consists of a game service controller which handles requests. The API can be querred using curl at `localhost:3000/tic_tac_api/v1/game_service`. The GridPlay model handles the player selections and game play for the game. It initialises a Caper (initial that keeps record of the player_id, the cell_row and cell_column and the cell_state as to whether it is occupied or not.
+
+* Angular + Coffee Script Web Application
+Angular is great for a clean, responsive and testable UI something that Rails is not so great at, as a result of that i decided to merge the two technology stacks for the web application. Rails is a good web framework that provides clean readable code. The Web Application used CoffeeScript to compile the AngularJS code. The homeCtrl.coffee.js consists of GameServiceHelper, Cell and Player helper classes that were used to aid in delivering the functionality of the application. 
 
 * How to run the test suite
-RSpec used to run TDD
+RSpec used to run TDD from a rails perspective. I did not get around to implementing Jasmine for the front-end tests.
 
 * ...
 
