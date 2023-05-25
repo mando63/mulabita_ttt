@@ -10,12 +10,3 @@ The Rails API consists of a game service controller which handles requests. The 
 
 * Angular + Coffee Script Web Application
 Angular is great for a clean, responsive and testable UI something that Rails is not so great at, as a result of that i decided to merge the two technology stacks for the web application. Rails is a good web framework that provides clean readable code. The Web Application used CoffeeScript to compile the AngularJS code. The homeCtrl.coffee.js consists of GameServiceHelper, Cell and Player helper classes that were used to aid in delivering the functionality of the application. 
-
-* How to run the test suite
-RSpec used to run TDD from a rails perspective. I did not get around to implementing Jasmine for the front-end tests.
-
-* ...
-
-
-Please feel free to use a different markup language if you do not plan to run
-<tt>rake doc:app</tt>.
